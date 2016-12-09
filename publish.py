@@ -16,16 +16,14 @@ import subprocess
 # Contains: chapter number, notebook filename, chapter title
 # if the chapter is number 0, do not put a "Chapter n - " prefix
 chapter_list = [
-	['0','teamivy','Preface'],
-	['1','database','Data Model and Database'],
-	['2','ScrapingCollegedata_MultipleRender','Scraping and Collecting Data'],
-	['3','normalize','Normalizing'],
-	['4','EDA','Data Analysis'],
-	['5','classification_v2','Classification'],
-	['6','website','The Public Website'],
-	['7','conclusion','Conclusions and Next Steps'],
-	['0','references','Appendix A - References and Dependencies'],
-	['0','build_deploy','Appendix B - Build and Deploy'],
+	['1','data_exploration','Data Exploration'],
+	['2','tfidf','Data Cleaning: TF-IDF'],
+	['3','baseline','Baseline Model Fitting and Results'],
+	['4','lsa','Model Enhancement: LSA'],
+	['5','meta_features','Model Enhancement: Meta Features'],
+	['6','lasso','Model Enhancement: Regularization'],
+	['7','final','Final Model Fitting and Results'],
+	['8','future','Future Works'],
 	]
 
 TMPDIR = os.environ['TMPDIR']
