@@ -23,7 +23,7 @@ sentence1 = 'This is the first sentence.'
 # sentence2 = 'This is the second sentence.'
 sentence2 = 'This intelligent second sentence is related to the first sentence.'
 # sentence3 = "A completely unrelated set of words will give a score of zero."
-sentence3 = "Completely unrelated drivel scores zero."
+sentence3 = "Completely unrelated nonsense scores zero."
 
 corpus = [sentence1, sentence2, sentence3]
 
