@@ -165,12 +165,52 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Data-cleaning:-TF-IDF">Data cleaning: TF-IDF<a class="anchor-link" href="#Data-cleaning:-TF-IDF">&#182;</a></h1><h2 id="0.-Overview:">0. Overview:<a class="anchor-link" href="#0.-Overview:">&#182;</a></h2><p>Below is a representative sentence from one essay:</p>
+<blockquote><p>Did you know that more and more people these days are depending on computers for their safety, natural education, and their social life? ...</p>
+</blockquote>
+<p>While the written language is straighforward for a human reader to evaluate, an automated system will need to translate the written word into a more machine-friendly format that will allow us to use data science techniques to grade the essays. The algorithm we have chosen is called term frequency-inverse document frequency, or <strong>tf-idf</strong> ("term frequency" because it emphasizes words that appear often in a particular essay, and "inverse document frequency" because it penalizes words that appear often in all documents). Essentially, this method takes as an input a set of text (in our case an essay) and <em>vectorizes</em> it, outputting a vector of numbers corresponding to that document.</p>
+<p>To create this output vector, a <strong>tf-idf</strong> algorithm counts the number of times a word appears in a document and scales it according to the formula</p>
+$$
+w_{j,i} = tf_{j,i} \cdot \log\frac{N}{df_i},
+$$<p>where $tf_{i,j}$ is the number of times term $i$ occurs in essay $j$, $N$ is the total number of essays, $df_i$ is the number of documents containing term $i$, and $w_{j,i}$ is the tf-idf weighted term vector for this sentence.</p>
+<h2 id="EXAMPLES-GO-HERE">EXAMPLES GO HERE<a class="anchor-link" href="#EXAMPLES-GO-HERE">&#182;</a></h2><p>Creating these vectors for every essay and stacking them on top of one another provides <strong>tf-idf matrix</strong>, a straightforward method for letting a computer handle text. Conveniently, taking any column from this matrix gives the (weighted) number of times a given word appears in each essay. Taking every column into account, we can now build a model that scores an essay based on the <em>word-content</em> of that essay.</p>
+<h1 id="TO-DO:">TO DO:<a class="anchor-link" href="#TO-DO:">&#182;</a></h1><ul>
+<li>Add in a couple example matrices based on the sentence above. I'm having a bit of trouble making it come out right (see <code>tfidf_example.py</code>)</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="1.-Import-packages">1. Import packages<a class="anchor-link" href="#1.-Import-packages">&#182;</a></h2>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre> 
+<div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">spearmanr</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 
 </div>

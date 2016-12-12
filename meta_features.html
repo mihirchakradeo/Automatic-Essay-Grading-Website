@@ -165,6 +165,37 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Meta-features">Meta-features<a class="anchor-link" href="#Meta-features">&#182;</a></h1><p>Of course, a good essay is more than the sum of its words. Even weighted by the tf-idf algorithm, using just word frequencies will miss many of the subtleties that separate good writing from bad. To capture some of these components, we also analyzed a number of <em>meta-features</em>, or features that look at the essay as a whole, rather than just the contents. In no particular order, the meta-features we analyzed were:</p>
+<h3 id="Cosine-similarity-to-the-essay-prompt"><strong>Cosine similarity to the essay prompt</strong><a class="anchor-link" href="#Cosine-similarity-to-the-essay-prompt">&#182;</a></h3><p>Vectorization is particularly useful in automatic essay grading because it allows us to translate more conventional math principles to the written word. One of the more relevant math principles, cosine similarity, allows us to quantify how similar a given essay is to its prompt. In three-dimensional space, the formula</p>
+$$
+\mathrm{similarity} = \cos\theta = \frac{\vec{a} \bullet \vec{b}}{||a|| \cdot ||b||}
+$$<p>calculates the smallest included angle between vectors $\vec{a}$ and $\vec{b}$. If $\vec{a}$ and $\vec{b}$ are colinear (on the same line in space), $\cos\theta = 1$, and if $\vec{a}$ and $\vec{b}$ form a right angle, $\cos\theta = 0$. If $\vec{a}$ and $\vec{b}$ point in exactly opposite directions $\cos\theta = -1$. Abstracting this principle to the tf-idf vectors of an essay and its prompt demonstrates its value in automatic essay assessment: essays very close to the prompt will receive similarity scores close to 1, while completely unrelated essays will receive lower scores. As an example, consider the following three sentences:</p>
+<blockquote><ol>
+<li><p>This is the first sentence.</p>
+</li>
+<li><p>This intelligent second sentence is related to the first sentence.</p>
+</li>
+<li><p>Completely unrelated nonsense scores zero.</p>
+</li>
+</ol>
+</blockquote>
+<p>The cosine similarities bewteen these three sentences are:</p>
+<p><strong>"This is the first sentence."</strong> vs. <strong>"This intelligent second sentence is related to the first sentence."</strong></p>
+$$\mathrm{similarity} = 0.69$$<p><strong>"This is the first sentence."</strong> vs. <strong>"Completely unrelated nonsense scores zero."</strong></p>
+$$\mathrm{similarity} = 0.00$$<p><strong>"This is the first sentence."</strong> vs. <strong>"This is the first sentence."</strong></p>
+$$\mathrm{similarity} = 1.00$$<p>While the benefits of this analysis are clear, so are its drawbacks. A writer who simply repeats the prompt would receive a perfect score in cosine similarity, a nonsensical conclusion that runs completely contrary to the way a human grader would assess an essay. Therefore, it must be just one of many meta-features used in our model.</p>
+<h3 id="Essay-length-in-words"><strong>Essay length in words</strong><a class="anchor-link" href="#Essay-length-in-words">&#182;</a></h3><p>In general, a longer essay allows the writer to more completely answer the prompt. Like cosine similarity, however, this meta-feature is insufficient as the sole metric for grading essays. A long, rambling response would score better than more succinct replies, again running counter to the behavior of a human grader.</p>
+<h3 id="Mean-word-length,-mean-sentence-length,-and-number-of-unique-words"><strong>Mean word length, mean sentence length, and number of unique words</strong><a class="anchor-link" href="#Mean-word-length,-mean-sentence-length,-and-number-of-unique-words">&#182;</a></h3><p>All related, these measures inform the model about the overall complexity of a particular essay. Sophisticated writers are likely to use longer words, longer sentences, and more words in general. However, these meta-features come with the same caveats as above: taken independently, they fail to accurately reproduce the work of a human grader.</p>
+<h2 id="TO-DO">TO DO<a class="anchor-link" href="#TO-DO">&#182;</a></h2><p><strong>Could we show individual fits for each of the meta features?</strong></p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
