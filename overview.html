@@ -170,7 +170,20 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-
+<table class="table"> <tbody> <tr>
+        <td> <label class="control-label"> <font size=3> Select chapter: </font> </label> </td>
+        <td> <select id="topnv" class="form-control" onchange="includeContent(this.options[this.selectedIndex].value);document.getElementById('botnav').options[this.options.selectedIndex].selected = true;">
+            <OPTION value="overview.html">Overview</option> <!-- capitalized so it is not clobbered by publish.py -->
+                <option value="data_exploration.html">Chapter 1 - Data Exploration</option>
+                <option value="tfidf.html">Chapter 2 - Data Cleaning: TF-IDF</option>
+                <option value="baseline.html">Chapter 3 - Baseline Model Fitting and Results</option>
+                <option value="lsa.html">Chapter 4 - Model Enhancement: LSA</option>
+                <option value="meta_features.html">Chapter 5 - Model Enhancement: Meta Features</option>
+                <option value="lasso.html">Chapter 6 - Model Enhancement: Regularization</option>
+                <option value="final.html">Chapter 7 - Final Model Fitting and Results</option>
+                <option value="future.html">Chapter 8 - Future Works</option>
+        </select> </td>
+      </tr> </tbody> </table>
 </div>
 </div>
 </div>
@@ -179,22 +192,10 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p onclick="includeContent("data_exploration.html");">  Data Exploration </p>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre> 
-</pre></div>
+<p><a href onclick="includeContent('data_exploration.html');">  Data Exploration </a></p>
 
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
