@@ -16,6 +16,7 @@ import subprocess
 # Contains: chapter number, notebook filename, chapter title
 # if the chapter is number 0, do not put a "Chapter n - " prefix
 chapter_list = [
+        ['0', 'overview', 'Overview'],
 	['1','data_exploration','Data Exploration'],
 	['2','tfidf','Data Cleaning: TF-IDF'],
 	['3','baseline','Baseline Model Fitting and Results'],
