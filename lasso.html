@@ -165,6 +165,91 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Regularization-(Lasso)">Regularization (Lasso)<a class="anchor-link" href="#Regularization-(Lasso)">&#182;</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Even after dimension reduction with LSA, our model still had in some cases 265 (260 from LSA + 5 meta-features) predictors.</p>
+<h2 id="Lasso">Lasso<a class="anchor-link" href="#Lasso">&#182;</a></h2><p>In order to improve the prediction accuracy and interpretability of the model, we applied Lasso regularization.</p>
+<p>In Lasso regression, we penalize large coefficients by minimizing the following:
+$$ \sum_{i=1}^{n}\left(y_i  - \beta_0 - \sum_{j=1}^{p} \beta_j x_{ij} \right)^2  + \alpha \sum_{j=1}^{p} |\beta_k| = RSS + \lambda \sum_{j=1}^{p} |\beta_k| $$</p>
+<p>$\alpha$ serves to control the impact of the regularization. When $\alpha$ is small, the regularization is small, and result in similar coefficients to ordinary linear regression. As $\alpha$ becomes larger, the coefficients becomes closer to zero.</p>
+<p>Unlike Ridge regression which the penalty is $l2$</p>
+<p>For choosing the best regularization parameter $\alpha$, we performed a five-fold cross validation and chose the $\alpha$ that results in the best prediction accuracy.</p>
+<h2 id="Results">Results<a class="anchor-link" href="#Results">&#182;</a></h2><p>As a result of Lasso cross-validation, we have further simplified the model as shown below. Number of features in the model has decreased to as small as 11. We have confirmed that all of the regularized model retained the 5 meta-features that we've added.</p>
+<table>
+<thead><tr>
+<th style="text-align:center">Essay set</th>
+<th style="text-align:center">Reg. param. $\alpha$</th>
+<th style="text-align:center"># of non-zero coeff.</th>
+<th style="text-align:center"># of original coeff.            </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">$1\times 10^{-3}$</td>
+<td style="text-align:center">162</td>
+<td style="text-align:center">205</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">$1\times 10^{-4}$</td>
+<td style="text-align:center">220</td>
+<td style="text-align:center">265 </td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">$1\times 10^{-3}$</td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">65</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">$1\times 10^{-4}$</td>
+<td style="text-align:center">34</td>
+<td style="text-align:center">45</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">$1\times 10^{-4}$</td>
+<td style="text-align:center">13</td>
+<td style="text-align:center">25 </td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">$1\times 10^{-4}$</td>
+<td style="text-align:center">98</td>
+<td style="text-align:center">145</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">$1\times 10^{-4}$</td>
+<td style="text-align:center">221</td>
+<td style="text-align:center">265</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">$1\times 10^{-4}$</td>
+<td style="text-align:center">129</td>
+<td style="text-align:center">145</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
