@@ -123,6 +123,7 @@
 		<td> <label class="control-label"> <font size=3> Select chapter: </font> </label> </td>
 		<td> <select id="topnv" class="form-control" onchange="includeContent(this.options[this.selectedIndex].value);document.getElementById('botnav').options[this.options.selectedIndex].selected = true;">
 		    <OPTION value="overview.html">Overview</option> <!-- capitalized so it is not clobbered by publish.py -->
+				<option value="overview.html">Overview</option>
 				<option value="data_exploration.html">Chapter 1 - Data Exploration</option>
 				<option value="tfidf.html">Chapter 2 - Data Cleaning: TF-IDF</option>
 				<option value="baseline.html">Chapter 3 - Baseline Model Fitting and Results</option>
@@ -146,6 +147,7 @@
 				<td> <label class="control-label"><font size=3> Select chapter: </font></label> </td>
 				<td> <select id="botnav" class="form-control" onchange="includeContent(this.options[this.selectedIndex].value);document.getElementById('topnav').options[this.options.selectedIndex].selected = true;">
 				<OPTION value="overview.html">Overview</option>
+				<option value="overview.html">Overview</option>
 				<option value="data_exploration.html">Chapter 1 - Data Exploration</option>
 				<option value="tfidf.html">Chapter 2 - Data Cleaning: TF-IDF</option>
 				<option value="baseline.html">Chapter 3 - Baseline Model Fitting and Results</option>
