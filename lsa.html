@@ -165,6 +165,214 @@ div#notebook {
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After vectorizing our essays with <code>sklearn</code>'s tf-idf vectorizer, we have a sparse matrix of vectorized text, often with <em>more than 16,000</em> different features. Outsized feature sets like this are ripe for overfitting, as shown in our baseline model, so we chose to perform <strong>dimensionality reduction</strong> to reduce the total number of features going into our model. A powerful tool at our disposal was <strong>latent semantic analysis</strong>, (LSA). Essentially, LSA takes in the large feature set of individual words and finds combinations of those words that explain most of the variability in the original text. This means that after performing LSA on a tf-idf matrix with thousands of features, we can use a much-reduced model with substantively fewer predictors in our model, avoiding some of the risk of overfitting.</p>
+<p>To explain how LSA works, consider the two one-sentence documents below:</p>
+<ol>
+<li>"Here is one document."</li>
+<li>"Here is another."</li>
+</ol>
+<p>As before, we can vectorize these two documents using a tf-idf algorithm. For the sake of explanation here, we will demonstrate LSA using a counting vectorizer, which simply counts the occurences of each term, but LSA part of the analysis is exactly the same no matter how we vectorize the text. As shown in the below code, after vectorization, the two documents become:</p>
+<table>
+<thead><tr>
+<th></th>
+<th>another</th>
+<th>document</th>
+<th>here</th>
+<th>is</th>
+<th>one</th>
+<th>this</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Here is one document.</strong></td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Here is one document.</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>A single LSA component will give each term in this tf-idf matrix a weight, multiply a document's tf-idf (row) vector by those weights, then sum across all the different terms. Effectively, it is transforming the high-dimensional tf-idf matrix into a much lower-dimensional space. To make these weights as useful as possible, LSA orders these weights such that the first LSA component explains the most variance in original feature sets, with subsequent components explaining progressively less variance. LSA components must also be orthogonal (forming right angles with each other, so they are independent) and of unit magnitude (so they don't change the original feature set's shape). It is possible to create as many LSA components as there are original features, but doing so would defeat the purpose of performing LSA. As show below, <code>sklearn</code> can implement LSA via <code>Truncated SVD</code>. In the simple case of one LSA component, the calculation looks like this:</p>
+<table>
+<thead><tr>
+<th></th>
+<th>another</th>
+<th>document</th>
+<th>here</th>
+<th>is</th>
+<th>one</th>
+<th>this</th>
+<th><strong>Sum</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LSA weight: </strong></td>
+<td>0.24</td>
+<td>0.4</td>
+<td>0.4</td>
+<td>0.64</td>
+<td>0.4</td>
+<td>0.24</td>
+<td>--</td>
+</tr>
+<tr>
+<td><strong>Weighted doc. 1</strong></td>
+<td>0.0</td>
+<td>0.4</td>
+<td>0.4</td>
+<td>0.64</td>
+<td>0.4</td>
+<td>0.0</td>
+<td><strong>1.83</strong></td>
+</tr>
+<tr>
+<td><strong>Weighted doc. 2</strong></td>
+<td>0.24</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.64</td>
+<td>0.0</td>
+<td>0.24</td>
+<td><strong>1.13</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Recall that while this example uses a counting vectorizer, our analysis used a tf-idf vectorizer. Our 2 x 6 vectorized set of documents has become a 2 x 1 matrix with much lower dimensionality.</p>
+<p>Abstracting this concept to the vastly higher-dimensional tf-idf is straightforward, but it leaves the choice of how many LSA components to use in the final model, a hyperparameter we call $d$. Again, the above example uses $d = 1$, but it is possible to choose $d$ up to the original number of features. In our case, we used cross validation to tune $d$, by varying it, training a new model with $d$ components from a training set, and evaluating that model's %R^2$ on a testing set. The results for each essay set are below.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="figures/d_tuning.png" alt="Tuning d" title="Tuning d"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[150]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="c"># Import modules</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">TruncatedSVD</span>
+
+<span class="k">def</span> <span class="nf">toTableRow</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
+    <span class="c"># Convert an array to a markdown table row</span>
+    
+    <span class="n">row</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">array</span><span class="p">:</span>
+        <span class="n">row</span> <span class="o">+=</span> <span class="s">&#39;|</span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="k">str</span>(element)
+    
+    <span class="n">row</span> <span class="o">+=</span> <span class="s">&#39;|&#39;</span>
+    
+    <span class="k">return</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+        
+
+<span class="n">sentences</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;Here is one document.&#39;</span><span class="p">,</span>
+             <span class="s">&#39;This is another.&#39;</span><span class="p">]</span>
+
+<span class="c"># Vectorize the text</span>
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
+<span class="n">word_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span><span class="o">.</span><span class="n">todense</span><span class="p">())</span>
+
+
+<span class="c"># Perform LSA</span>
+<span class="n">n_components</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">lsa_model</span> <span class="o">=</span> <span class="n">TruncatedSVD</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">)</span>
+<span class="n">lsa_transformed</span> <span class="o">=</span> <span class="n">lsa_model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">word_mat</span><span class="p">)</span>
+
+<span class="c"># Print out a markdown table of the vectorized text</span>
+<span class="n">n_features</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">())</span>
+
+<span class="k">print</span> <span class="s">&#39;| &#39;</span><span class="p">,</span> <span class="n">toTableRow</span><span class="p">(</span><span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">())</span>
+<span class="k">print</span> <span class="n">toTableRow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="s">&#39;---&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">n_features</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,)))</span>
+<span class="k">print</span> <span class="s">&#39;|**</span><span class="si">%s</span><span class="s">**&#39;</span><span class="o">%</span><span class="k">sentences</span>[0], toTableRow(word_mat[0,:])
+<span class="k">print</span> <span class="s">&#39;|**</span><span class="si">%s</span><span class="s">**&#39;</span><span class="o">%</span><span class="k">sentences</span>[0], toTableRow(word_mat[1,:])
+
+<span class="k">print</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+
+
+<span class="c"># Print out a markdown table of the LSA calculation</span>
+<span class="c"># print &#39;| &#39;, toTableRow(vectorizer.get_feature_names()), &#39;**Sum**|&#39;</span>
+<span class="c"># print toTableRow(np.tile(&#39;---&#39;, (n_features + 2,)))</span>
+<span class="c"># print &#39;|**LSA weight: **&#39;, toTableRow(np.round(lsa_model.components_[0,:], 2)), &#39; |&#39;</span>
+<span class="c"># print &#39;|**Weighted doc. 1**&#39;, toTableRow(np.round(</span>
+<span class="c">#                                             np.multiply(lsa_model.components_[0,:], </span>
+<span class="c">#                                             word_mat[0,:]),</span>
+<span class="c">#                                             2)), &#39;**%.2f**|&#39;%round(lsa_transformed[0], 2)</span>
+
+<span class="c"># print &#39;|**Weighted doc. 2**&#39;, toTableRow(np.round(</span>
+<span class="c">#                                             np.multiply(lsa_model.components_[0,:], </span>
+<span class="c">#                                             word_mat[1,:]),</span>
+<span class="c">#                                             2)), &#39;**%.2f**|&#39;%round(lsa_transformed[1], 2)</span>
+
+<span class="k">print</span> <span class="n">lsa_model</span><span class="o">.</span><span class="n">explained_variance_ratio_</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>|  |another|document|here|is|one|this|
+|---|---|---|---|---|---|---|
+|**Here is one document.** |0|1|1|1|1|0|
+|**Here is one document.** |1|0|0|1|0|1|
+
+
+[ 0.09750776  0.90249224]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this case, the two documents produced six features. LSA will weight each of these features according to the formula</p>
+$$
+v^{LSA}_{i, d} = \phi_{d,1} \cdot tf_{1} + \cdots + \phi_{d,j} \cdot tf_{j} + \cdots + \phi_{d,n} \cdot tf_{n}
+$$<p>where $v^{LSA}_{i,d}$ is the $i^{th}$ element of the $d^{th}$ LSA component, $[tf_1, \cdots tf_n]$</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
