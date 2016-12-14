@@ -31,7 +31,7 @@ time, mark, audio, video {
 
 @font-face {
     font-family: "Computer Modern";
-    src: url('cmunss.otf');
+    src: url("cmunss.otf") format("opentype") ;
     /*src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf'); */
 }
 
