@@ -184,7 +184,7 @@ div#notebook {
 <p>In Lasso regression, we penalize large coefficients by minimizing the following:
 $$ \sum_{i=1}^{n}\left(y_i  - \beta_0 - \sum_{j=1}^{p} \beta_j x_{ij} \right)^2  + \alpha \sum_{j=1}^{p} |\beta_k| = RSS + \lambda \sum_{j=1}^{p} |\beta_k| $$</p>
 <p>$\alpha$ serves to control the impact of the regularization. When $\alpha$ is small, the regularization is small, and result in similar coefficients to ordinary linear regression. As $\alpha$ becomes larger, the coefficients becomes closer to zero.</p>
-<p>Unlike Ridge regression which the penalty is $l2$</p>
+<p>Unlike Ridge regression which the penalty is $l2$, some of the coefficients are forced to become exactly zero.</p>
 <p>For choosing the best regularization parameter $\alpha$, we performed a five-fold cross validation and chose the $\alpha$ that results in the best prediction accuracy.</p>
 <h2 id="Results">Results<a class="anchor-link" href="#Results">&#182;</a></h2><p>As a result of Lasso cross-validation, we have further simplified the model as shown below. Number of features in the model has decreased to as small as 11. We have confirmed that all of the regularized model retained the 5 meta-features that we've added.</p>
 <table>
