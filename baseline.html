@@ -173,7 +173,7 @@ div#notebook {
 <h1 id="Baseline-Model">Baseline Model<a class="anchor-link" href="#Baseline-Model">&#182;</a></h1><h2 id="Multiple-Linear-Regression:">Multiple Linear Regression:<a class="anchor-link" href="#Multiple-Linear-Regression:">&#182;</a></h2><p>As a baseline, we trained a multiple linear regression model using tf-idf matrices ($W_{N\times I}$) as predictors.</p>
 <p>Note here that the $W_{N\times I}$ is a huge (5000 - 16000 columns) sparse matrix.</p>
 <h2 id="Results">Results<a class="anchor-link" href="#Results">&#182;</a></h2><p>We split the data into training set (90%) and testing set (10%) and evaluated the model on how well the model crated by training performed on testing set.</p>
-<p>The image below is the scatter plot of actual Score vs predicted score.
+<p>The image below is the scatter plot of actual score vs predicted score.
 A perfect model will result in every point on diagonal line $y=x$.</p>
 <p>We calculated Spearman's rank correlation coefficient ($\rho$), which is a measure of rank correlation (monotonic relationships between $x$ and $y$.
 <img src='figures/baseline.png'></p>
