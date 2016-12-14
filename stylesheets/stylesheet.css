@@ -32,7 +32,7 @@ time, mark, audio, video {
 @font-face {
     font-family: "Computer Modern";
     src: url('cmunss.otf');
-    /*src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf'*/);
+    /*src: url('http://mirrors.ctan.org/fonts/cm-unicode/fonts/otf/cmunss.otf'); */
 }
 
 /* HTML5 display-role reset for older browsers */
