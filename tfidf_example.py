@@ -8,23 +8,30 @@ def toMarkDownTable(vect, sentences, sentenceOne):
     # wordVec = vect.transform(sentenceOne)
 
     vectWords = []
-    vectCounts = []
+    vectCounts1 = []
+    vectCounts2 = []
     dividers = []
 
-    for word in vect.vocabulary_:
+    # for word in vect.vocabulary_:
+    for word in vect.get_feature_names():
         vectWords += '|%s'%word
         dividers += '|---'
     vectWords += '|'
     dividers += '|'
 
     for count in np.array(wordVec.todense()[0,:]).reshape(-1):
-        vectCounts += '|%4.3f'%count
-    vectCounts += '|'
+        vectCounts1 += '|%4.3f'%count
+    vectCounts1 += '|'
+
+    for count in np.array(wordVec.todense()[1,:]).reshape(-1):
+        vectCounts2 += '|%4.3f'%count
+    vectCounts2 += '|'
 
     # Print out the results
     print ''.join(vectWords)
     print ''.join(dividers)
-    print ''.join(vectCounts)
+    print ''.join(vectCounts1)
+    print ''.join(vectCounts2)
 
 
 
@@ -37,7 +44,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 # sentenceTwo = 'Initially, ones safety while using a computer is at risk.'
 
 exampleSentence = 'This is the first sentence.'
-sentenceTwo = 'This is also a sentence.'
+sentenceTwo = "Here another."
 
 # vect = TfidfVectorizer()
 vect = CountVectorizer()
@@ -83,7 +90,8 @@ toMarkDownTable(CountVectorizer(), [exampleSentence, sentenceTwo], exampleSenten
 
 print '\n'
 
-toMarkDownTable(TfidfVectorizer(), [exampleSentence, sentenceTwo], exampleSentence)
+toMarkDownTable(TfidfVectorizer(norm='l2'), [exampleSentence, sentenceTwo], exampleSentence)
+# toMarkDownTable(TfidfVectorizer(), [exampleSentence, exampleSentence], exampleSentence)
 
 
 
