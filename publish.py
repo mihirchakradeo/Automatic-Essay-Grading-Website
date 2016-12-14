@@ -28,7 +28,8 @@ chapter_list = [
 	]
 
 TMPDIR = os.environ['TMPDIR']
-PREFIX = 'ipython nbconvert --to html --output ' + TMPDIR
+# PREFIX = 'ipython nbconvert --to html --output ' + TMPDIR
+PREFIX = 'jupyter nbconvert --to html --output ' + TMPDIR
 
 def striptags(file):
     """
