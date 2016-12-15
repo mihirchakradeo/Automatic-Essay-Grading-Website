@@ -187,7 +187,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 style="color:#0000EE; text-decoration:underline; display:inline" onclick="includeContent('data_exploration.html'); document.getElementById('topnv').selectedIndex=1; document.getElementById('botnav').selectedIndex=1;"> Chapter 1 - Data Exploration</h2><h2><a target="_blank" href="./data_exploration.html"> Chapter 1 - Data Exploration </a></h2><p>We worked on a publicly available data from the Hewlett Foundation containing 12976 essays from eight different sets. Each essay set contained data from a different exam, though all essays from any given set received the same prompt. Some essay prompts were just a short question requesting a response, while others required reading a passage before responding.</p>
+<h2><a target="_blank" href="./data_exploration.html"> Chapter 1 - Data Exploration </a></h2><p>We worked on a publicly available data from the Hewlett Foundation containing 12976 essays from eight different sets. Each essay set contained data from a different exam, though all essays from any given set received the same prompt. Some essay prompts were just a short question requesting a response, while others required reading a passage before responding.</p>
 <p>We extracted some basic statistics from the data as well as plotted histograms and scatter plots of selected characteristics to gain insights into data's general makeup. The below image presents the distribution of essay lengths in the eight sets. While some appear to be normally distributed—such as Set 1—others are decidedly non-normal—such as Set 8. While not a problem in terms of modeling, this does slightly restrict the classes of model we will be able to use (models like LDA, which assumes multi-variate normality among the predictors, will probably not be a good choice, for example).</p>
 <p><img src='figures/length_hist_overview.png' title='Histogram for essay length'></p>
 <p>The below image shows the distribution of different grades as determined by human readers. Again, some essay sets can reasonably be approximated with a normal distribution, while others cannot.</p>
@@ -201,8 +201,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><h2 style="color:#0000EE; text-decoration:underline" onclick="includeContent('baseline.html'); document.getElementById('topnv').selectedIndex=2; document.getElementById('botnav').selectedIndex=2;"> Chapter 2 - Data Cleaning: tf-idf </h2>
-In order to turn essays (text data) into computer-friendly format, we used a technique called <em>tf-idf vectorizing</em>. This method takes a set of text as an input, and outputs a vector of numbers that correspond to each document. Tf-idf balances two competing factors about each word: words that appear often in a given document are considered important, and therefore receive a higher weight, while words that appear often in all documents are considered common and less important, lowering their weight. This prevents often-used but relatively unimportant words like <em>the</em>, <em>we</em>, etc. from dominating the results. Because this method applies to every possible word in all the essays among a set, it can produce models with tens of thousands of predictors.</p>
+<h2><a target="_blank" href="./tfidf.html"> Chapter 2 - Data Cleaning: tf-idf </a></h2><p>In order to turn essays (text data) into computer-friendly format, we used a technique called <em>tf-idf vectorizing</em>. This method takes a set of text as an input, and outputs a vector of numbers that correspond to each document. Tf-idf balances two competing factors about each word: words that appear often in a given document are considered important, and therefore receive a higher weight, while words that appear often in all documents are considered common and less important, lowering their weight. This prevents often-used but relatively unimportant words like <em>the</em>, <em>we</em>, etc. from dominating the results. Because this method applies to every possible word in all the essays among a set, it can produce models with tens of thousands of predictors.</p>
 
 </div>
 </div>
@@ -212,7 +211,7 @@ In order to turn essays (text data) into computer-friendly format, we used a tec
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 style="color:#0000EE; text-decoration:underline" onclick="includeContent('baseline.html'); document.getElementById('topnv').selectedIndex=3; document.getElementById('botnav').selectedIndex=3;"> Chapter 3 - Baseline Model </h2><p>Using the resultant matrices from <em>tf-idf</em>, we created a baseline model using multiple linear regression, the results of which are shown below. In the following plots, the predictions from a perfect model would fall entirely on the grey line, something that is decidedly <em>not</em> true in some of the essay sets. The baseline resulted in a poor fit. In next few chapters, we worked on improving the model by dimension reduction, adding in meta features, and applying regularizations to improve the model.</p>
+<h2><a target="_blank" href="./baseline.html"> Chapter 3 - Baseline Model </a></h2><p>Using the resultant matrices from <em>tf-idf</em>, we created a baseline model using multiple linear regression, the results of which are shown below. In the following plots, the predictions from a perfect model would fall entirely on the grey line, something that is decidedly <em>not</em> true in some of the essay sets. The baseline resulted in a poor fit. In next few chapters, we worked on improving the model by dimension reduction, adding in meta features, and applying regularizations to improve the model.</p>
 <p><img src='figures/baseline_overview.png'></p>
 
 </div>
@@ -223,7 +222,7 @@ In order to turn essays (text data) into computer-friendly format, we used a tec
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 style="color:#0000EE; text-decoration:underline" onclick="includeContent('lsa.html'); document.getElementById('topnv').selectedIndex=4; document.getElementById('botnav').selectedIndex=4;"> Chapter 4 - LSA </h2><p>After <em>tf idf</em>, we have a sparse matrix of vectorized text with something on the order of 15 million elements, which may have resulted in overfitting in our baseline model. Thus, we chose to perform dimensionality reduction to reduce the total number of features. Specifically, we used a method called <em>latent semantic analysis (LSA)</em> for this. <em>LSA</em> is essentially a PCA for textual data.</p>
+<h2><a target="_blank" href="./lsa.html"> Chapter 4 - LSA </a></h2><p>After <em>tf idf</em>, we have a sparse matrix of vectorized text with something on the order of 15 million elements, which may have resulted in overfitting in our baseline model. Thus, we chose to perform dimensionality reduction to reduce the total number of features. Specifically, we used a method called <em>latent semantic analysis (LSA)</em> for this. <em>LSA</em> is essentially a PCA for textual data.</p>
 <p>We performed a cross-validation to choose the optimal number of dimension ($d$) for each essay set.</p>
 <p><img src='figures/d_tuning.png'></p>
 
@@ -235,7 +234,7 @@ In order to turn essays (text data) into computer-friendly format, we used a tec
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 style="color:#0000EE; text-decoration:underline" onclick="includeContent('meta_features.html'); document.getElementById('topnv').selectedIndex=5; document.getElementById('botnav').selectedIndex=5;"> Chapter 5 - Meta Features </h2><p>To improve the model even further, we also added in several meta-features:</p>
+<h2><a target="_blank" href="./meta_features.html"> Chapter 5 - Meta Features </a></h2><p>To improve the model even further, we also added in several meta-features:</p>
 <ul>
 <li>Similarity of the essay to the prompt</li>
 <li>Essay length in words</li>
@@ -254,8 +253,7 @@ In order to turn essays (text data) into computer-friendly format, we used a tec
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><h2 style="color:#0000EE; text-decoration:underline" onclick="includeContent('lasso.html'); document.getElementById('topnv').selectedIndex=6; document.getElementById('botnav').selectedIndex=6;"> Chapter 6 - Regularization: Lasso </h2>
-Even after dimension reduction using LSA, our model still had large number of predictors. To separate out only the most important predictors, we applied lasso regression to avoid overfitting and further improving the prediction accuracy. In general, regularization penalizes large coefficients in the linear regression model by some penalty $\lambda$, bringing them all toward zero and reducing the likelihood of overfitting. Lasso, the particular flavor regression we chose to perform, actually manages to bring some some coefficients completely to zero, eliminating them from the model altogether. However, choosing to regularize our model left us with a decision of exactly <em>which</em> $\lambda$ to choose. Therefore, we performed cross-validation to find the optimal value.</p>
+<h2><a target="_blank" href="./lasso.html"> Chapter 6 - Regularization: Lasso </a></h2><p>Even after dimension reduction using LSA, our model still had large number of predictors. To separate out only the most important predictors, we applied lasso regression to avoid overfitting and further improving the prediction accuracy. In general, regularization penalizes large coefficients in the linear regression model by some penalty $\lambda$, bringing them all toward zero and reducing the likelihood of overfitting. Lasso, the particular flavor regression we chose to perform, actually manages to bring some some coefficients completely to zero, eliminating them from the model altogether. However, choosing to regularize our model left us with a decision of exactly <em>which</em> $\lambda$ to choose. Therefore, we performed cross-validation to find the optimal value.</p>
 
 </div>
 </div>
@@ -265,7 +263,7 @@ Even after dimension reduction using LSA, our model still had large number of pr
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 style="color:#0000EE; text-decoration:underline" onclick="includeContent('final.html'); document.getElementById('topnv').selectedIndex=7; document.getElementById('botnav').selectedIndex=7;"> Chapter 7 - Final Model </h2><p>LSA and regularization left our model with between 10 and 205 parameters, depending on the essay set, a marked improvement from the original 15,000. Even better, our model scores consistently higher compared to human graders, as shown in the following plots.</p>
+<h2><a target="_blank" href="./final.html"> Chapter 7 - Final Model </a></h2><p>LSA and regularization left our model with between 10 and 205 parameters, depending on the essay set, a marked improvement from the original 15,000. Even better, our model scores consistently higher compared to human graders, as shown in the following plots.</p>
 <p><img src="figures/final.png" alt="Final model scores"></p>
 <p>The chief metric we use to evaluate this model is Spearman's rank correlation, $\rho$, which measures the degree to which the predicted and actual scores follow one another. Our final model has correlations betwen 0.75 and 0.90, a striking improvement over the baseline models' 0.5. With these scores, our model is ready to offload at least some of the work human graders have to do now.</p>
 
@@ -277,7 +275,7 @@ Even after dimension reduction using LSA, our model still had large number of pr
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 style="color:#0000EE; text-decoration:underline" onclick="includeContent('futre.html'); document.getElementById('topnv').selectedIndex=8; document.getElementById('botnav').selectedIndex=8;"> Chapter 8 - Future Work </h2><p>Although our model has improved significantly from the baseline, we believe there is room for further improvement.</p>
+<h2> Chapter 8 - Future Work </h2><p>Although our model has improved significantly from the baseline, we believe there is room for further improvement.</p>
 <p>Specifically, we propose doing higher level text analytics and incorporating them as meta-features. Here are some examples:</p>
 <ul>
 <li><p>Syntax complexity</p>
@@ -297,6 +295,19 @@ We would also like to try other models such as Random Forest Classifier/Regresso
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
 </div>
     </div>
   </div>
