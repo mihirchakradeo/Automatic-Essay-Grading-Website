@@ -243,7 +243,7 @@ div#notebook {
 <li>Mean sentence length</li>
 <li>Number of unique words</li>
 </ul>
-<p>We checked that some of hte meta-features had correlation to the score, so we can expect them to be useful for forming the final model.</p>
+<p>We checked that some of the meta-features had correlation to the score, so we can expect them to be useful for forming the final model.</p>
 <p><img src='figures/corr_length_overview.png'></p>
 
 </div>
@@ -266,7 +266,7 @@ div#notebook {
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2><a target="_blank" href="./final.html"> Chapter 7 - Final Model </a></h2><p>LSA and regularization left our model with between 10 and 205 parameters, depending on the essay set, a marked improvement from the original 15,000. Even better, our model scores consistently higher compared to human graders, as shown in the following plots.</p>
 <p><img src="figures/final.png" alt="Final model scores"></p>
-<p>The chief metric we use to evaluate this model is Spearman's rank correlation, $\rho$, which measures the degree to which the predicted and actual scores follow one another. Our final model has correlations betwen 0.75 and 0.90, a striking improvement over the baseline models' 0.5. With these scores, our model is ready to offload at least some of the work human graders have to do now.</p>
+<p>The chief metric we use to evaluate this model is Spearman's rank correlation, $\rho$, which measures the degree to which the predicted and actual scores follow one another. Our final model has correlations between 0.75 and 0.90, a striking improvement over the baseline models' 0.5. With these scores, our model is ready to offload at least some of the work human graders have to do now.</p>
 
 </div>
 </div>
